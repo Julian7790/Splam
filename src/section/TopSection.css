@@ -1,0 +1,29 @@
+
+
+.welcome-text {
+    position: relative; 
+    display: inline-block; 
+  }
+  
+  .welcome-text::before {
+    content: attr(data-text); 
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent; 
+    background-image: linear-gradient(to right, #ff5722, #e91e63, #9c27b0, #2196f3, #4caf50, #ffc107); /* Define gradient colors */
+    background-size: 200% auto; 
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: animateGradient 10s linear infinite;
+  }
+  
+  @keyframes animateGradient {
+    0%, 100% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 100% 0;
+    }
+  }
+  
