@@ -43,7 +43,7 @@ const MusicSection = () => {
   }, [keyword]);
 
   useEffect(() => {
-    getTracksByGenre('R&B');
+    getTracksByGenre('W');
   }, []);
 
   return (
