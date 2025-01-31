@@ -32,3 +32,65 @@
   @keyframes l1-2 {
      80%,100% {transform: rotate(0.5turn)}
   }
+
+/* Heart icon hover and click animation */
+.heart-icon {
+  position: relative;  /* So we can position the small hearts relative to the heart */
+  transition: transform 0.2s ease-in-out, color 0.1s ease-in-out;
+}
+
+.heart-icon:hover {
+  transform: scale(1.5);  /* Make the heart bigger when hovered */
+}
+
+.heart-icon:active {
+  transform: scale(0.8);  /* Shrink the heart when clicked */
+  color: #ff5c8d;  /* Pink color for the heart when clicked */
+}
+
+/* Small hearts pop-out animation */
+.heart-icon:active::after {
+  content: '❤️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.5rem;  /* Small size for the popped hearts */
+  animation: popOut 0.5s forwards;
+  animation-delay: 0.1s; /* Delay to allow click effect */
+}
+
+@keyframes popOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%) scale(0.5); /* Move hearts upwards and scale down */
+  }
+}
+
+/* Add multiple hearts randomly appearing when clicked */
+.heart-icon:active::before,
+.heart-icon:active::after {
+  content: '❤️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.5rem;
+  animation: popOut 0.5s forwards;
+}
+
+.heart-icon:active::before {
+  animation-delay: 0s;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+}
+
+.heart-icon:active::after {
+  animation-delay: 0.2s;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-out;
+}
