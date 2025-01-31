@@ -1,10 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useFavorite } from '../context/FavoriteContext.jsx'; // Import the context
-import { heart, redheart, repeat, repeat1 } from '../assets'; // Import the heart and repeat buttons
+import { heart, redheart, repeat, repeat1, CD } from '../assets'; // Import the heart, repeat buttons, and CD image
 
 const Favorite = () => {
   const { favorite, toggleFavorite } = useFavorite(); // Use the context
   const [repeatMode, setRepeatMode] = useState(false); // State to manage repeat
+  const [currentTrack, setCurrentTrack] = useState(null); // Track that's currently playing
+  const audioRef = useRef(null); // Reference to the currently playing audio element
+
+  const handlePlayClick = (track, audioElement) => {
+    // Stop the previous audio if it's playing
+    if (audioRef.current && audioRef.current !== audioElement) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0; // Reset time
+    }
+
+    // Play the selected track
+    setCurrentTrack(track);
+    audioRef.current = audioElement;
+    audioElement.play();
+  };
+
+  const handleAudioEnded = () => {
+    setCurrentTrack(null); // Hide the CD overlay when the song ends
+  };
 
   return (
     <div className="bg-darkBlue flex flex-col items-center min-h-screen p-6">
@@ -21,7 +40,14 @@ const Favorite = () => {
 
               {/* Audio Player */}
               {song.preview_url ? (
-                <audio src={song.preview_url} controls loop={repeatMode} className="w-full mt-4"></audio>
+                <audio 
+                  src={song.preview_url} 
+                  controls 
+                  loop={repeatMode} 
+                  className="w-full mt-4"
+                  onPlay={(e) => handlePlayClick(song, e.target)} // Set current track when played
+                  onEnded={handleAudioEnded} // Handle when the audio ends
+                ></audio>
               ) : (
                 <p className="text-gray-500">No preview available</p>
               )}
@@ -54,6 +80,26 @@ const Favorite = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* CD and song info section that overlays at the bottom-right corner */}
+      {currentTrack && (
+        <div className="fixed bottom-0 right-0 m-4 flex items-center bg-blue-400 bg-opacity-60 p-4 rounded-lg z-50">
+          {/* CD Image */}
+          <div className="relative">
+            <img 
+              src={CD} 
+              alt="CD" 
+              className="w-20 h-20 animate-spin-slow" // Spinning effect for the CD
+            />
+          </div>
+
+          {/* Song and Artist Info */}
+          <div className="ml-4 text-white">
+            <p className="font-semibold">{currentTrack.name}</p>
+            <p className="text-sm">{currentTrack.album.artists[0].name}</p>
+          </div>
         </div>
       )}
     </div>
