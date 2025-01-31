@@ -86,7 +86,7 @@ const MusicSection = () => {
                 onClick={() => toggleFavorite(track)}
                 className={`text-3xl heart-icon ${favorite.some((fav) => fav.id === track.id) ? 'text-red-500' : 'text-gray-500'}`}
               >
-                ❤️
+                {favorite.some((fav) => fav.id === track.id) ? '❤️' : '🤍'}
               </button>
             </div>
           ))}
