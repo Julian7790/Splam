@@ -1,63 +1,64 @@
-/* HTML: <div class="loader"></div> */
+/* Loader for loading state */
 .loader {
-    width: 40px;
-    aspect-ratio: 1;
-    position: relative;
-  }
-  .loader:before,
-  .loader:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: -8px 0 0 -8px;
-    width: 16px;
-    aspect-ratio: 1;
-    background: #3FB8AF;
-    animation:
-      l1-1 2s  infinite,
-      l1-2 .5s infinite;
-  }
-  .loader:after {
-    background:#FF3D7F;
-    animation-delay: -1s,0s;
-  }
-  @keyframes l1-1 {
-    0%   {top:0   ;left:0}
-    25%  {top:100%;left:0}
-    50%  {top:100%;left:100%}
-    75%  {top:0   ;left:100%}
-    100% {top:0   ;left:0}
-  }
-  @keyframes l1-2 {
-     80%,100% {transform: rotate(0.5turn)}
-  }
+  width: 40px;
+  aspect-ratio: 1;
+  position: relative;
+}
+
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: -8px 0 0 -8px;
+  width: 16px;
+  aspect-ratio: 1;
+  background: #3FB8AF;
+  animation: l1-1 2s infinite, l1-2 .5s infinite;
+}
+
+.loader:after {
+  background: #FF3D7F;
+  animation-delay: -1s, 0s;
+}
+
+@keyframes l1-1 {
+  0% { top: 0; left: 0; }
+  25% { top: 100%; left: 0; }
+  50% { top: 100%; left: 100%; }
+  75% { top: 0; left: 100%; }
+  100% { top: 0; left: 0; }
+}
+
+@keyframes l1-2 {
+  80%, 100% { transform: rotate(0.5turn); }
+}
 
 /* Heart icon hover and click animation */
 .heart-icon {
-  position: relative;  /* So we can position the small hearts relative to the heart */
+  position: relative;
   transition: transform 0.2s ease-in-out, color 0.1s ease-in-out;
 }
 
 .heart-icon:hover {
-  transform: scale(1.5);  /* Make the heart bigger when hovered */
+  transform: scale(1.5);
 }
 
 .heart-icon:active {
-  transform: scale(0.8);  /* Shrink the heart when clicked */
-  color: #ff5c8d;  /* Pink color for the heart when clicked */
+  transform: scale(0.8);
+  color: #ff5c8d;
 }
 
-/* Small hearts pop-out animation */
 .heart-icon:active::after {
   content: '❤️';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 0.5rem;  /* Small size for the popped hearts */
+  font-size: 0.5rem;
   animation: popOut 0.5s forwards;
-  animation-delay: 0.1s; /* Delay to allow click effect */
+  animation-delay: 0.1s;
 }
 
 @keyframes popOut {
@@ -67,38 +68,59 @@
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -150%) scale(0.5); /* Move hearts upwards and scale down */
+    transform: translate(-50%, -150%) scale(0.5);
   }
 }
 
-/* Add multiple hearts randomly appearing when clicked */
-.heart-icon:active::before,
-.heart-icon:active::after {
-  content: '❤️';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 0.5rem;
-  animation: popOut 0.5s forwards;
-}
-
-.heart-icon:active::before {
-  animation-delay: 0s;
-  animation-duration: 0.5s;
-  animation-timing-function: ease-out;
-}
-
-.heart-icon:active::after {
-  animation-delay: 0.2s;
-  animation-duration: 0.6s;
-  animation-timing-function: ease-out;
-}
-
+/* Repeat Button */
 .repeat-icon {
-  transition: transform 0.2s ease; /* Add smooth transition */
+  transition: transform 0.2s ease;
 }
 
 .repeat-icon:hover {
-  transform: scale(1.4); /* Scale up the button when hovered */
+  transform: scale(1.4);
+}
+
+/* CD Spinning animation */
+.animate-spin-slow {
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Fixed positioning for CD section at the bottom-right of the screen */
+.fixed-cd-section {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 20px; /* Adjust the distance from the edges */
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it stays on top */
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.fixed-cd-section .relative {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fixed-cd-section .animate-spin-slow {
+  animation: spin 10s linear infinite;
+}
+
+/* Adjusted animation for the spinning CD */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

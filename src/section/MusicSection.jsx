@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
 import './Loading.css';
 import { useFavorite } from '../context/FavoriteContext.jsx'; 
-import { heart, redheart, repeat, repeat1 } from '../assets'; // Import the repeat SVGs
+import { heart, redheart, repeat, repeat1, CD } from '../assets'; // Import the repeat and CD SVGs
 
 const MusicSection = () => {
   const [keyword, setKeyword] = useState('');
@@ -11,6 +10,9 @@ const MusicSection = () => {
   const [error, setError] = useState(null);
   const { favorite, toggleFavorite } = useFavorite(); // Use the context
   const [repeatMode, setRepeatMode] = useState(false); // State for repeat functionality
+  const [currentTrack, setCurrentTrack] = useState(null); // Track that's currently playing
+
+  const audioRef = useRef(null); // Reference to the currently playing audio element
 
   const fetchTracks = async (query) => {
     setLoading(true);
@@ -56,6 +58,23 @@ const MusicSection = () => {
     }
   }, [keyword]);
 
+  const handlePlayClick = (track, audioElement) => {
+    // Stop the previous audio if it's playing
+    if (audioRef.current && audioRef.current !== audioElement) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0; // Reset time
+    }
+
+    // Play the selected track
+    setCurrentTrack(track);
+    audioRef.current = audioElement;
+    audioElement.play();
+  };
+
+  const handleAudioEnded = () => {
+    setCurrentTrack(null); // Hide the CD overlay when the song ends
+  };
+
   return (
     <div className='flex flex-col items-center'>
       <div className='flex gap-5'>
@@ -85,34 +104,36 @@ const MusicSection = () => {
                 src={track.preview_url} 
                 controls
                 loop={repeatMode} // Loop the audio based on the repeat state
+                onPlay={(event) => handlePlayClick(track, event.target)} // Set current track when played
+                onEnded={handleAudioEnded} // Handle when the audio ends
               ></audio>
 
               {/* Heart Button to Favorite/Unfavorite the song */}
-              <div className=' flex justify-between'>
-              <button
-                onClick={() => toggleFavorite(track)}
-                className="text-3xl heart-icon"
-              >
-                <img 
-                  src={favorite.some((fav) => fav.id === track.id) ? redheart : heart} 
-                  alt="Heart icon" 
-                  className="w-12 h-12 mt-4" // Adjust the size and margin-top
-                />
-              </button>
-
-              {/* Container for repeat button on the right */}
-              <div className="flex justify-end mt-4">
-                {/* Repeat Button */}
-                <button 
-                  onClick={() => setRepeatMode(!repeatMode)} 
-                  className="text-xl repeat-icon"
+              <div className='flex justify-between'>
+                <button
+                  onClick={() => toggleFavorite(track)}
+                  className="text-3xl heart-icon"
                 >
                   <img 
-                    src={repeatMode ? repeat1 : repeat} // Show repeat1 when repeatMode is true
-                    alt="Repeat button" 
-                    className="w-12 h-12" // Adjust the size
+                    src={favorite.some((fav) => fav.id === track.id) ? redheart : heart} 
+                    alt="Heart icon" 
+                    className="w-12 h-12 mt-4" // Adjust the size and margin-top
                   />
                 </button>
+
+                {/* Container for repeat button on the right */}
+                <div className="flex justify-end mt-4">
+                  {/* Repeat Button */}
+                  <button 
+                    onClick={() => setRepeatMode(!repeatMode)} 
+                    className="text-xl repeat-icon"
+                  >
+                    <img 
+                      src={repeatMode ? repeat1 : repeat} // Show repeat1 when repeatMode is true
+                      alt="Repeat button" 
+                      className="w-12 h-12" // Adjust the size
+                    />
+                  </button>
                 </div> 
               </div>
             </div>
@@ -120,15 +141,34 @@ const MusicSection = () => {
         </div>
       )}
 
-      {/* Link to Favorite Songs Page */}
-      <Link to="/favorites">
-        <button className="mt-6 p-2 bg-blue-500 text-white rounded">Go to Favorites</button>
-      </Link>
+      {/* CD and song info section that overlays at the bottom-right corner */}
+      {currentTrack && (
+        <div className="fixed bottom-0 right-0 m-4 flex items-center bg-blue-400 bg-opacity-60 p-4 rounded-lg z-50">
+          {/* CD Image */}
+          <div className="relative">
+            <img 
+              src={CD} 
+              alt="CD" 
+              className="w-20 h-20 animate-spin-slow" // Spinning effect for the CD
+            />
+          </div>
+
+          {/* Song and Artist Info */}
+          <div className="ml-4 text-white">
+            <p className="font-semibold">{currentTrack.name}</p>
+            <p className="text-sm">{currentTrack.album.artists[0].name}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default MusicSection;
+
+
+
+
 
 
 
