@@ -94,3 +94,11 @@
   animation-duration: 0.6s;
   animation-timing-function: ease-out;
 }
+
+.repeat-icon {
+  transition: transform 0.2s ease; /* Add smooth transition */
+}
+
+.repeat-icon:hover {
+  transform: scale(1.4); /* Scale up the button when hovered */
+}

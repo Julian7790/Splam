@@ -5,6 +5,8 @@ import listening from './listening.png';
 import musicLogo from './musicLogo.svg'
 import heart from './heart.png';
 import redheart from './redheart.png';
+import repeat from './repeat.svg';
+import repeat1 from './repeat1.svg'
 
 export {
     playButton,
@@ -13,5 +15,7 @@ export {
     listening,
     musicLogo,
     heart,
-    redheart
+    redheart,
+    repeat,
+    repeat1
 }

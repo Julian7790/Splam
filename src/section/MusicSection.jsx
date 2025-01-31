@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Loading.css';
 import { useFavorite } from '../context/FavoriteContext.jsx'; 
-import { heart, redheart } from '../assets'; // Import the heart images
+import { heart, redheart, repeat, repeat1 } from '../assets'; // Import the repeat SVGs
 
 const MusicSection = () => {
   const [keyword, setKeyword] = useState('');
@@ -10,6 +10,7 @@ const MusicSection = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { favorite, toggleFavorite } = useFavorite(); // Use the context
+  const [repeatMode, setRepeatMode] = useState(false); // State for repeat functionality
 
   const fetchTracks = async (query) => {
     setLoading(true);
@@ -80,9 +81,14 @@ const MusicSection = () => {
                 <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>{track.name}</h5>
               </a>
               <p className='mb-3 font-normal text-gray-700 dark:text-gray-400 font-palanquin'>{track.album.artists[0].name}</p>
-              <audio src={track.preview_url} controls></audio>
+              <audio 
+                src={track.preview_url} 
+                controls
+                loop={repeatMode} // Loop the audio based on the repeat state
+              ></audio>
 
               {/* Heart Button to Favorite/Unfavorite the song */}
+              <div className=' flex justify-between'>
               <button
                 onClick={() => toggleFavorite(track)}
                 className="text-3xl heart-icon"
@@ -90,9 +96,25 @@ const MusicSection = () => {
                 <img 
                   src={favorite.some((fav) => fav.id === track.id) ? redheart : heart} 
                   alt="Heart icon" 
-                  className="w-6 h-6" // Adjust the size of the heart image
+                  className="w-12 h-12 mt-4" // Adjust the size and margin-top
                 />
               </button>
+
+              {/* Container for repeat button on the right */}
+              <div className="flex justify-end mt-4">
+                {/* Repeat Button */}
+                <button 
+                  onClick={() => setRepeatMode(!repeatMode)} 
+                  className="text-xl repeat-icon"
+                >
+                  <img 
+                    src={repeatMode ? repeat1 : repeat} // Show repeat1 when repeatMode is true
+                    alt="Repeat button" 
+                    className="w-12 h-12" // Adjust the size
+                  />
+                </button>
+                </div> 
+              </div>
             </div>
           ))}
         </div>
@@ -107,6 +129,9 @@ const MusicSection = () => {
 };
 
 export default MusicSection;
+
+
+
 
 
 
