@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Loading.css';
 import { useFavorite } from '../context/FavoriteContext.jsx'; 
+import { heart, redheart } from '../assets'; // Import the heart images
 
 const MusicSection = () => {
   const [keyword, setKeyword] = useState('');
@@ -84,9 +85,13 @@ const MusicSection = () => {
               {/* Heart Button to Favorite/Unfavorite the song */}
               <button
                 onClick={() => toggleFavorite(track)}
-                className={`text-3xl heart-icon ${favorite.some((fav) => fav.id === track.id) ? 'text-red-500' : 'text-gray-500'}`}
+                className="text-3xl heart-icon"
               >
-                {favorite.some((fav) => fav.id === track.id) ? '❤️' : '🤍'}
+                <img 
+                  src={favorite.some((fav) => fav.id === track.id) ? redheart : heart} 
+                  alt="Heart icon" 
+                  className="w-6 h-6" // Adjust the size of the heart image
+                />
               </button>
             </div>
           ))}
