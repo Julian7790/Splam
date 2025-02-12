@@ -7,7 +7,7 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import AccountPage from './pages/Account.jsx'; // Import the Account Page
 import { FavoriteProvider } from './context/FavoriteContext.jsx';
-import { AuthProvider } from './context/AuthContext.js'; // Import AuthProvider
+import { AuthProvider } from './context/AuthContext.jsx'; // Import AuthProvider
 
 const App = () => {
   return (
