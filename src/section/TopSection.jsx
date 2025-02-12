@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { musicLogo } from "../assets";
 import Hamburger from "hamburger-react";
+import { useAuth } from "../context/AuthContext.jsx"; // Import the useAuth hook
 import "./TopSection.css";
 
 const TopSection = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth(); // Access user from context
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -55,13 +57,34 @@ const TopSection = () => {
             >
               Favorite Songs
             </Link>
-            <Link
-              to="/login"
-              className="text-xl font-montserrat font-semibold text-blue-500 py-2"
-              onClick={toggleNavbar} // Close navbar when a link is clicked
-            >
-              Login
-            </Link>
+
+            {/* Conditionally render Account link */}
+            {user ? (
+              <Link
+                to="/account"
+                className="text-xl font-montserrat font-semibold text-blue-500 py-2"
+                onClick={toggleNavbar} // Close navbar when a link is clicked
+              >
+                Account
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-xl font-montserrat font-semibold text-blue-500 py-2"
+                  onClick={toggleNavbar} // Close navbar when a link is clicked
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="text-xl font-montserrat font-semibold text-blue-500 py-2"
+                  onClick={toggleNavbar} // Close navbar when a link is clicked
+                >
+                  Sign up
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </div>
@@ -70,4 +93,5 @@ const TopSection = () => {
 };
 
 export default TopSection;
+
 
