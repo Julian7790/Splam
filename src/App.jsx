@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import TopSection from './section/TopSection.jsx';
 import MusicSection from './section/MusicSection.jsx';
 import Favorite from './pages/FavoritePages.jsx';
@@ -23,6 +23,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/account" element={<AccountPage />} /> {/* Add the Account Page route */}
+                <Route path="*" element={<Navigate to="/" />} /> {/* Redirect unknown routes to home */}
               </Routes>
             </section>
           </main>
