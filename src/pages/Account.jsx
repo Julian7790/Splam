@@ -1,16 +1,20 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext"; // Import AuthContext
-import { signOut } from "firebase/auth"; // Import signOut from Firebase
-import { auth } from "../firebase/firebase"; // Import Firebase auth
-import "../styles/Account.css";   // Import the CSS file for styling
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase";
+import { useNavigate } from "react-router-dom"; // for routing
+import "../styles/Account.css";
 
 const Account = () => {
-  const { user } = useContext(AuthContext); // Use the user from the AuthContext
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  // Sign out function
+  const [bio, setBio] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
+
   const handleSignOut = async () => {
     try {
-      await signOut(auth); // Sign out the user
+      await signOut(auth);
       alert("You have signed out successfully.");
     } catch (error) {
       console.error("Error signing out:", error);
@@ -24,6 +28,41 @@ const Account = () => {
       {user ? (
         <div className="account-details">
           <p className="account-welcome">Welcome, {user.email}</p>
+
+          {/* Profile Picture Upload */}
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={(e) => setProfilePic(URL.createObjectURL(e.target.files[0]))} 
+          />
+          {profilePic && (
+            <img 
+              src={profilePic} 
+              alt="Profile" 
+              className="profile-picture"
+            />
+          )}
+
+          {/* Bio Input */}
+          <textarea 
+            className="bio-input"
+            value={bio} 
+            onChange={(e) => setBio(e.target.value)} 
+            placeholder="Write a short bio..."
+          />
+
+          {/* Show Bio */}
+          {bio && <p className="user-bio">"{bio}"</p>}
+
+          {/* View Favorites Button */}
+          <button 
+            className="favorites-button"
+            onClick={() => navigate("/favorites")}
+          >
+            View Favorite Songs
+          </button>
+
+          {/* Sign Out Button */}
           <button className="sign-out-button" onClick={handleSignOut}>
             Sign Out
           </button>
@@ -36,6 +75,7 @@ const Account = () => {
 };
 
 export default Account;
+
 
 
 
