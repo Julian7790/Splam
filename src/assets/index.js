@@ -10,6 +10,7 @@ import repeat1 from './repeat1.svg'
 import CD from './CD.svg';
 import play from './play.svg';
 import pause from './pause.svg';
+import plusSign from './plussign.svg';
 
 export {
     playButton,
@@ -23,5 +24,6 @@ export {
     repeat1,
     CD,
     play,
-    pause
+    pause,
+    plusSign
 }

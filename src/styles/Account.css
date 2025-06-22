@@ -94,6 +94,7 @@ input[type="file"] {
   padding: 6px;
   background-color: #fff;
   cursor: pointer;
+  display: none; /* Hide the default file input */
 }
 
 /* ==== Login Prompt ==== */
@@ -102,5 +103,19 @@ input[type="file"] {
   font-size: 1rem;
   margin-top: 20px;
 }
+
+/* ==== Custom Upload Icon Styling ==== */
+.upload-icon {
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin: 0 auto;
+}
+
+.upload-icon:hover {
+  transform: scale(1.15);
+}
+
 
   

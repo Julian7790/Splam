@@ -2,8 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
-import { useNavigate } from "react-router-dom"; // for routing
+import { useNavigate } from "react-router-dom";
 import "../styles/Account.css";
+import { plusSign } from '../assets'; // ✅ Your custom plus icon
 
 const Account = () => {
   const { user } = useContext(AuthContext);
@@ -12,10 +13,9 @@ const Account = () => {
   const [bio, setBio] = useState("");
   const [profilePic, setProfilePic] = useState(null);
 
-  // ✅ This useEffect is added to log the user's UID
   useEffect(() => {
     if (user) {
-      console.log("User ID:", user.uid); // Copy this value from your browser console
+      console.log("User ID:", user.uid);
     }
   }, [user]);
 
@@ -36,52 +36,63 @@ const Account = () => {
         <div className="account-details">
           <p className="account-welcome">Welcome, {user.email}</p>
 
-          {/* Profile Picture Upload */}
-          <input 
-            type="file" 
-            accept="image/*" 
-            onChange={(e) => setProfilePic(URL.createObjectURL(e.target.files[0]))} 
-          />
-          {profilePic && (
-            <img 
-              src={profilePic} 
-              alt="Profile" 
-              className="profile-picture"
+          {/* 📸 Profile Picture Upload (using plus icon) */}
+          <div className="profile-upload-container">
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              onChange={(e) =>
+                setProfilePic(URL.createObjectURL(e.target.files[0]))
+              }
+              style={{ display: "none" }}
             />
-          )}
+            <label htmlFor="fileInput" className="custom-upload-label">
+              {profilePic ? (
+                <img
+                  src={profilePic}
+                  alt="Profile"
+                  className="profile-picture"
+                />
+              ) : (
+                <img src={plusSign} alt="Add" className="upload-icon" />
+              )}
+            </label>
+          </div>
 
-          {/* Bio Input */}
-          <textarea 
+          {/* ✏️ Bio Input */}
+          <textarea
             className="bio-input"
-            value={bio} 
-            onChange={(e) => setBio(e.target.value)} 
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
             placeholder="Write a short bio..."
           />
-
-          {/* Show Bio */}
           {bio && <p className="user-bio">"{bio}"</p>}
 
-          {/* View Favorites Button */}
-          <button 
+          {/* 🎵 View Favorites */}
+          <button
             className="favorites-button"
             onClick={() => navigate("/favorites")}
           >
             View Favorite Songs
           </button>
 
-          {/* Sign Out Button */}
+          {/* 🚪 Sign Out */}
           <button className="sign-out-button" onClick={handleSignOut}>
             Sign Out
           </button>
         </div>
       ) : (
-        <p className="login-prompt">Please log in to view your account details.</p>
+        <p className="login-prompt">
+          Please log in to view your account details.
+        </p>
       )}
     </div>
   );
 };
 
 export default Account;
+
 
 
 
