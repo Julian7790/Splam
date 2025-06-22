@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
@@ -11,6 +11,13 @@ const Account = () => {
 
   const [bio, setBio] = useState("");
   const [profilePic, setProfilePic] = useState(null);
+
+  // ✅ This useEffect is added to log the user's UID
+  useEffect(() => {
+    if (user) {
+      console.log("User ID:", user.uid); // Copy this value from your browser console
+    }
+  }, [user]);
 
   const handleSignOut = async () => {
     try {

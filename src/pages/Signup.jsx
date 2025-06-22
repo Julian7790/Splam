@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "../firebase/firebase.js";  // Make sure this is the correct path
+import { auth } from "../firebase/firebase.js";
+import { db } from "../firebase/firebase.js"; // ✅ import Firestore db
+import { doc, setDoc } from "firebase/firestore"; // ✅ import Firestore methods
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -14,10 +16,17 @@ const Signup = () => {
     setError('');
 
     try {
-      // Firebase signup attempt
-      await createUserWithEmailAndPassword(auth, email, password);
+      // ✅ Create user in Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const newUser = userCredential.user;
+
+      // ✅ Create Firestore document for the new user
+      await setDoc(doc(db, "users", newUser.uid), {
+        favorites: [],
+      });
+
       console.log('Signup successful!');
-      navigate('/'); // Redirect to home page after successful signup
+      navigate('/'); // Redirect to home page
     } catch (err) {
       setError(err.message);
       console.error('Signup error:', err);
@@ -77,5 +86,6 @@ const Signup = () => {
 };
 
 export default Signup;
+
 
 

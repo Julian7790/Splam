@@ -4,15 +4,13 @@ import { AuthContext } from '../context/AuthContext';
 import { fetchFavoriteSongs, addFavoriteSong, removeFavoriteSong } from '../firebase/favorite.js';
 import { heart, redheart, repeat, repeat1, CD } from '../assets';
 
-
 const FavoritesPage = () => {
   const { favorite, setFavorite } = useFavorite();
-  const { user } = useContext(AuthContext); // Get logged-in user
+  const { user } = useContext(AuthContext);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [repeatMode, setRepeatMode] = useState(false);
   const audioRef = useRef(null);
 
-  // Fetch favorites from Firestore when user loads
   useEffect(() => {
     if (user) {
       const getFavoriteSongs = async () => {
@@ -23,7 +21,6 @@ const FavoritesPage = () => {
     }
   }, [user]);
 
-  // Handle play logic
   const handlePlayClick = (track, audioElement) => {
     if (audioRef.current && audioRef.current !== audioElement) {
       audioRef.current.pause();
@@ -38,7 +35,6 @@ const FavoritesPage = () => {
     setCurrentTrack(null);
   };
 
-  // Toggle favorite (add/remove in Firestore)
   const handleFavoriteToggle = async (track) => {
     if (!user) return;
 
@@ -107,7 +103,6 @@ const FavoritesPage = () => {
         </div>
       )}
 
-      {/* Currently Playing Overlay */}
       {currentTrack && (
         <div className="fixed bottom-0 right-0 m-4 flex items-center bg-blue-400 bg-opacity-60 p-4 rounded-lg z-50">
           <img src={CD} alt="CD" className="w-20 h-20 animate-spin-slow" />
@@ -122,6 +117,7 @@ const FavoritesPage = () => {
 };
 
 export default FavoritesPage;
+
 
 
 

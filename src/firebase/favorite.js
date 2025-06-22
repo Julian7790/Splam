@@ -1,11 +1,12 @@
-// src/firebase/favorite.js
 import { db } from "./firebase";
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
+// Fetch favorite songs from Firestore
 export const fetchFavoriteSongs = async (userId) => {
   try {
-    const userRef = doc(db, "users", userId);
-    const docSnap = await getDoc(userRef);
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+
     if (docSnap.exists()) {
       return docSnap.data().favorites || [];
     } else {
@@ -17,24 +18,16 @@ export const fetchFavoriteSongs = async (userId) => {
   }
 };
 
+// Add a song to Firestore favorites
 export const addFavoriteSong = async (userId, track) => {
-  try {
-    const userRef = doc(db, "users", userId);
-    await setDoc(userRef, { favorites: arrayUnion(track) }, { merge: true });
-    console.log("✅ Added to Firestore:", track);
-  } catch (err) {
-    console.error("❌ Error adding to Firestore:", err);
-  }
+  const userRef = doc(db, "users", userId);
+  await setDoc(userRef, { favorites: arrayUnion(track) }, { merge: true });
 };
 
+// Remove a song from Firestore favorites
 export const removeFavoriteSong = async (userId, track) => {
-  try {
-    const userRef = doc(db, "users", userId);
-    await updateDoc(userRef, {
-      favorites: arrayRemove(track),
-    });
-    console.log("🗑️ Removed from Firestore:", track);
-  } catch (err) {
-    console.error("❌ Error removing from Firestore:", err);
-  }
+  const userRef = doc(db, "users", userId);
+  await updateDoc(userRef, {
+    favorites: arrayRemove(track),
+  });
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Changed from HashRouter to BrowserRouter
 import TopSection from './section/TopSection.jsx';
 import MusicSection from './section/MusicSection.jsx';
 import Favorite from './pages/FavoritePages.jsx';
@@ -23,7 +23,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/account" element={<AccountPage />} />
-                <Route path="*" element={<MusicSection />} /> {/* Redirect unknown routes to home */}
+                <Route path="*" element={<MusicSection />} /> {/* Optional catch-all route */}
               </Routes>
             </section>
           </main>
